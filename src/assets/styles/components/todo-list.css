@@ -1,0 +1,27 @@
+.todo_list-daily {
+  @apply bg-primary/50 dark:bg-primary/20;
+}
+
+.todo_list-daily .checkbox {
+  @apply checkbox-primary;
+}
+
+.todo_list-default {
+  @apply bg-info/50 dark:bg-info/30;
+}
+
+.todo_list-default .checkbox {
+  @apply checkbox-info;
+}
+
+.todo_list-completed {
+  @apply bg-success/50 dark:bg-success/30;
+}
+
+.todo_list-completed .checkbox {
+  @apply checkbox-success;
+}
+
+*[data-last="true"] .dropdown {
+  @apply dropdown-top;
+}
