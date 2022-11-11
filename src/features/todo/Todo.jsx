@@ -51,10 +51,11 @@ const Todo = ({
   handleTodoComplete = () => {},
   handleTodoDelete = () => {},
   handleTodoRegular = () => {},
+  className = "",
 }) => {
   return (
     <li
-      className="flex items-center gap-2 select-none py-2 px-3 cursor-pointer rounded bg-black/10 dark:bg-slate-50/10 hover:bg-black/20 duration-300 group"
+      className={`flex items-center gap-2 select-none py-2 px-3 cursor-pointer rounded duration-300 group ${className}`}
       data-last={lastChild}
     >
       <input
@@ -64,10 +65,7 @@ const Todo = ({
         checked={checked}
         onChange={() => handleTodoComplete(!checked)}
       />
-      <label
-        htmlFor={id}
-        className="text-sm ml-1 cursor-pointer group-hover:text-white"
-      >
+      <label htmlFor={id} className="text-sm ml-1 cursor-pointer">
         {title}
       </label>
       <TodoOptions
@@ -80,3 +78,5 @@ const Todo = ({
 };
 
 export default Todo;
+
+// bg-black/10 dark:bg-slate-50/10 hover:bg-black/20

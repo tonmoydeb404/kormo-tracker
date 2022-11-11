@@ -94,8 +94,8 @@ const Dashboard = () => {
           <DashboardTodoList
             isLoading={isLoading}
             data={regularTodos}
-            title={"Default"}
-            type="info"
+            title={"Regular"}
+            type="warning"
           />
           <DashboardTodoList
             isLoading={isLoading}

@@ -1,27 +1,55 @@
-.todo_list-primary {
-  @apply bg-primary/50 dark:bg-primary/20;
+/* header style */
+.todolist-primary .todolist_header {
+  @apply bg-primary text-white;
 }
 
-.todo_list-primary .checkbox {
+.todolist-warning .todolist_header {
+  @apply bg-warning text-black;
+}
+
+.todolist-success .todolist_header {
+  @apply bg-success text-white;
+}
+
+/* body style */
+.todolist-primary .todolist_body {
+  @apply bg-primary/40 dark:bg-primary/10;
+}
+
+.todolist-warning .todolist_body {
+  @apply bg-warning/40 dark:bg-warning/10;
+}
+
+.todolist-success .todolist_body {
+  @apply bg-success/40 dark:bg-success/10;
+}
+
+/* checkbox style */
+.todolist-primary .checkbox {
   @apply checkbox-primary;
 }
 
-.todo_list-info {
-  @apply bg-info/50 dark:bg-info/30;
+.todolist-warning .checkbox {
+  @apply checkbox-warning;
 }
 
-.todo_list-info .checkbox {
-  @apply checkbox-info;
-}
-
-.todo_list-success {
-  @apply bg-success/50 dark:bg-success/30;
-}
-
-.todo_list-success .checkbox {
+.todolist-success .checkbox {
   @apply checkbox-success;
 }
 
-*[data-last="true"] .dropdown {
-  @apply dropdown-top;
+/* item style */
+.todolist-primary .todolist_item {
+  @apply border-primary/50 border;
+}
+
+.todolist-warning .todolist_item {
+  @apply border-warning/50 border;
+}
+
+.todolist-success .todolist_item {
+  @apply border-success/50 border;
+}
+
+.todolist_item {
+  @apply bg-slate-50 dark:bg-slate-50/5 shadow;
 }

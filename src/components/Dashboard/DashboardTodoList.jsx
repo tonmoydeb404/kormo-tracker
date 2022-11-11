@@ -14,7 +14,7 @@ const DashboardTodoHeader = ({
   setIsOpen = () => {},
 }) => {
   return (
-    <div className="flex items-center px-4">
+    <div className="flex items-center px-4 py-2 todolist_header">
       <span className="text-sm font-bold block">{title}</span>
 
       <button
@@ -66,6 +66,7 @@ const DashboardTodoBody = ({ data = [], isLoading = true }) => {
               handleTodoRegular(isRegular, item)
             }
             handleTodoDelete={() => handleTodoDelete(item.id)}
+            className="todolist_item"
           />
         ))
       ) : (
@@ -76,7 +77,7 @@ const DashboardTodoBody = ({ data = [], isLoading = true }) => {
   }
 
   return (
-    <div className="collapse-content px-0">
+    <div className="collapse-content px-0 todolist_body">
       <ul className="flex flex-col gap-2 mt-5 px-4">{todosContent}</ul>
     </div>
   );
@@ -96,8 +97,10 @@ const DashboardTodoList = ({
   return (
     <div>
       <div
-        className={`py-4 rounded todo_list-${type} 
-        collapse ${isOpen ? "collapse-open overflow-auto" : "collapse-close"}
+        className={`todolist todolist-${type} 
+        collapse rounded ${
+          isOpen ? "collapse-open overflow-auto" : "collapse-close"
+        }
         ${className}`}
       >
         <DashboardTodoHeader
