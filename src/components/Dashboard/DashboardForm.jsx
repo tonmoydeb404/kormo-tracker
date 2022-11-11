@@ -1,5 +1,7 @@
 import { nanoid } from "@reduxjs/toolkit";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { selectDateFilter } from "../../features/global/globalSlice";
 import { useAddTodoMutation } from "../../features/todo/todoApi";
 
 const DashboardForm = () => {
@@ -7,12 +9,15 @@ const DashboardForm = () => {
   const [title, setTitle] = useState("");
   const [addTodo, todoResponse] = useAddTodoMutation();
 
+  // date filter
+  const dateFilter = useSelector(selectDateFilter);
+
   const handleTodoForm = async (e) => {
     e.preventDefault();
     const newTodo = {
       id: nanoid(),
       title: title,
-      date: new Date().toISOString(),
+      date: dateFilter == null ? new Date().toISOString() : dateFilter,
       isCompleted: false,
       isRegular: false,
     };
@@ -35,8 +40,11 @@ const DashboardForm = () => {
         />
       </div>
       <div>
-        <button className="btn btn-primary" type="submit">
+        <button className="btn hidden sm:inline-flex btn-primary" type="submit">
           Add New
+        </button>
+        <button className="btn sm:hidden btn-primary" type="submit">
+          <i className="bi bi-plus-lg"></i>
         </button>
       </div>
     </form>

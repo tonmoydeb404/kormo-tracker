@@ -4,7 +4,7 @@ export const globalSlice = createSlice({
   name: "global",
   initialState: {
     darkTheme: true,
-    sidebar: false,
+    dateFilter: new Date().toISOString(),
   },
   reducers: {
     toggleTheme: (state) => {
@@ -13,20 +13,21 @@ export const globalSlice = createSlice({
     setDarkTheme: (state, action) => {
       state.darkTheme = action.payload;
     },
-    toggleSidebar: (state) => {
-      state.sidebar = !state.sidebar;
+    setDateFilter: (state, action) => {
+      state.dateFilter = action.payload;
     },
-    setSidebar: (state, action) => {
-      state.sidebar = action.payload;
+    toggleDateFilter: (state) => {
+      state.dateFilter =
+        state.dateFilter == null ? new Date().toISOString() : null;
     },
   },
 });
 
 // actions
-export const { toggleTheme, toggleSidebar, setDarkTheme, setSidebar } =
+export const { toggleTheme, setDarkTheme, setDateFilter, toggleDateFilter } =
   globalSlice.actions;
 
 // selectors
 export const selectGlobal = (state) => state.global;
 export const selectDarkTheme = (state) => state.global.darkTheme;
-export const selectSidebar = (state) => state.global.sidebar;
+export const selectDateFilter = (state) => state.global.dateFilter;

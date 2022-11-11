@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import DashboardControl from "../components/Dashboard/DashboardControl";
 import DashboardHeader from "../components/Dashboard/DashboardHeader";
 import DashboardTodoList from "../components/Dashboard/DashboardTodoList";
+import { selectDateFilter } from "../features/global/globalSlice";
 import {
   useLazyCreateCollectionQuery,
   useLazyGetTodosQuery,
 } from "../features/todo/todoApi";
 
 const Dashboard = () => {
+  // queries
   const [getTodos, { isLoading, data }] = useLazyGetTodosQuery();
   const [createCollection, _] = useLazyCreateCollectionQuery();
 
-  // initial querys
+  // initial queries
   useEffect(() => {
     (async () => {
       await createCollection();
@@ -19,6 +22,10 @@ const Dashboard = () => {
     })();
   }, []);
 
+  // date filter
+  const dateFilter = useSelector(selectDateFilter);
+
+  // app states
   const [filteredTodos, setFilteredTodos] = useState([]);
   const [regularTodos, setRegularTodos] = useState([]);
   const [completedTodos, setCompletedTodos] = useState([]);
@@ -29,7 +36,9 @@ const Dashboard = () => {
       // filtererd todos
       const ftodos = data.filter(
         (item) =>
-          new Date(item.date).toDateString() == new Date().toDateString() &&
+          (dateFilter == null ||
+            new Date(item.date).toDateString() ==
+              new Date(dateFilter).toDateString()) &&
           !item.isRegular &&
           !item.isCompleted
       );
@@ -39,7 +48,9 @@ const Dashboard = () => {
       const ctodos = data.filter(
         (item) =>
           item.isCompleted &&
-          new Date(item.date).toDateString() == new Date().toDateString()
+          (dateFilter == null ||
+            new Date(item.date).toDateString() ==
+              new Date(dateFilter).toDateString())
       );
 
       // update states
@@ -54,7 +65,18 @@ const Dashboard = () => {
       setRegularTodos([]);
       setCompletedTodos([]);
     };
-  }, [data, isLoading]);
+  }, [data, isLoading, dateFilter]);
+
+  // dynamic title
+  let dynamicTitle = null;
+
+  if (new Date(dateFilter).toDateString() == new Date().toDateString()) {
+    dynamicTitle = "Todays";
+  } else if (dateFilter == null) {
+    dynamicTitle = "All";
+  } else {
+    dynamicTitle = new Date(dateFilter).toDateString();
+  }
 
   return (
     <>
@@ -66,20 +88,20 @@ const Dashboard = () => {
           <DashboardTodoList
             isLoading={isLoading}
             data={filteredTodos}
-            title={"Todays"}
-            type="daily"
+            title={dynamicTitle}
+            type="primary"
           />
           <DashboardTodoList
             isLoading={isLoading}
             data={regularTodos}
             title={"Default"}
-            type="default"
+            type="info"
           />
           <DashboardTodoList
             isLoading={isLoading}
             data={completedTodos}
             title={"Completed"}
-            type="completed"
+            type="success"
           />
         </div>
       </div>

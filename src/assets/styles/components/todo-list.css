@@ -1,24 +1,24 @@
-.todo_list-daily {
+.todo_list-primary {
   @apply bg-primary/50 dark:bg-primary/20;
 }
 
-.todo_list-daily .checkbox {
+.todo_list-primary .checkbox {
   @apply checkbox-primary;
 }
 
-.todo_list-default {
+.todo_list-info {
   @apply bg-info/50 dark:bg-info/30;
 }
 
-.todo_list-default .checkbox {
+.todo_list-info .checkbox {
   @apply checkbox-info;
 }
 
-.todo_list-completed {
+.todo_list-success {
   @apply bg-success/50 dark:bg-success/30;
 }
 
-.todo_list-completed .checkbox {
+.todo_list-success .checkbox {
   @apply checkbox-success;
 }
 
