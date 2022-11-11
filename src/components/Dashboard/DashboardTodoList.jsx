@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import Todo from "../../features/todo/Todo";
+import {
+  useDeleteTodoMutation,
+  useUpdateTodoMutation,
+} from "../../features/todo/todoApi";
 import GenSekeleton from "../Skeleton/GenSekeleton";
 import TodoSkeleton from "../Skeleton/TodoSkeleton";
 
+// dashboard todo header
 const DashboardTodoHeader = ({
   title,
   isOpen = true,
@@ -22,7 +27,24 @@ const DashboardTodoHeader = ({
   );
 };
 
+// dashboard todo body
 const DashboardTodoBody = ({ data = [], isLoading = true }) => {
+  const [updateTodo, updateResponse] = useUpdateTodoMutation();
+  const [deleteTodo, deleteResponse] = useDeleteTodoMutation();
+
+  // handle todo complete
+  const handleTodoComplete = (isCompleted, todo) => {
+    updateTodo({ ...todo, isCompleted });
+  };
+  // handle todo delete
+  const handleTodoDelete = (id) => {
+    deleteTodo(id);
+  };
+  // handle todo regular
+  const handleTodoRegular = (isRegular, todo) => {
+    updateTodo({ ...todo, isRegular });
+  };
+
   // todos content
   let todosContent = "";
   // handle loading state
@@ -35,8 +57,15 @@ const DashboardTodoBody = ({ data = [], isLoading = true }) => {
             title={item.title}
             id={item.id}
             checked={item.isCompleted}
-            index={index}
+            isRegular={item.isRegular}
             lastChild={arr.length - index <= 1}
+            handleTodoComplete={(isChecked) =>
+              handleTodoComplete(isChecked, item)
+            }
+            handleTodoRegular={(isRegular) =>
+              handleTodoRegular(isRegular, item)
+            }
+            handleTodoDelete={() => handleTodoDelete(item.id)}
           />
         ))
       ) : (
@@ -53,6 +82,7 @@ const DashboardTodoBody = ({ data = [], isLoading = true }) => {
   );
 };
 
+// dashboard todo list
 const DashboardTodoList = ({
   className = "",
   title = null,

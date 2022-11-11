@@ -1,26 +1,22 @@
 import { nanoid } from "@reduxjs/toolkit";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addTodo } from "../../features/todo/todoSlice";
+import { useAddTodoMutation } from "../../features/todo/todoApi";
 
 const DashboardForm = () => {
   // app state
   const [title, setTitle] = useState("");
+  const [addTodo, todoResponse] = useAddTodoMutation();
 
-  const dispatch = useDispatch();
-
-  const handleTodoForm = (e) => {
+  const handleTodoForm = async (e) => {
     e.preventDefault();
-
     const newTodo = {
       id: nanoid(),
       title: title,
       date: new Date().toISOString(),
       isCompleted: false,
+      isRegular: false,
     };
-
-    dispatch(addTodo(newTodo));
-
+    await addTodo(newTodo);
     // reset state
     setTitle("");
   };

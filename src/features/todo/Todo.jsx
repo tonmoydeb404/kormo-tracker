@@ -1,8 +1,11 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { removeTodo } from "./todoSlice";
 
-const TodoOptions = ({ index = 0, handleDelete = () => {} }) => {
+const TodoOptions = ({
+  index = 0,
+  handleTodoDelete,
+  handleTodoRegular,
+  isRegular,
+}) => {
   return (
     <div className="dropdown dropdown-end ml-auto">
       <label tabIndex={index} className="btn btn-sm btn-square btn-ghost">
@@ -13,14 +16,23 @@ const TodoOptions = ({ index = 0, handleDelete = () => {} }) => {
         tabIndex={index}
         className="dropdown-content bg-base-300 border border-slate-700 menu menu-compact shadow rounded w-52"
       >
+        {isRegular ? (
+          <li>
+            <span onClick={() => handleTodoRegular(false)}>
+              <i className="bi bi-bookmark-dash"></i>
+              remove from regular
+            </span>
+          </li>
+        ) : (
+          <li>
+            <span onClick={() => handleTodoRegular(true)}>
+              <i className="bi bi-bookmark"></i>
+              mark as regular
+            </span>
+          </li>
+        )}
         <li>
-          <span>
-            <i className="bi bi-bookmark "></i>
-            mark as default
-          </span>
-        </li>
-        <li>
-          <span onClick={handleDelete}>
+          <span onClick={handleTodoDelete}>
             <i className="bi bi-trash "></i>
             delete todo
           </span>
@@ -32,17 +44,14 @@ const TodoOptions = ({ index = 0, handleDelete = () => {} }) => {
 
 const Todo = ({
   title = null,
-  onChange = () => {},
   checked = undefined,
+  isRegular = false,
   id = null,
-  index = 0,
   lastChild = false,
+  handleTodoComplete = () => {},
+  handleTodoDelete = () => {},
+  handleTodoRegular = () => {},
 }) => {
-  const dispatch = useDispatch();
-  const handleDelete = () => {
-    dispatch(removeTodo({ id }));
-  };
-
   return (
     <li
       className="flex items-center gap-2 select-none py-2 px-3 cursor-pointer rounded bg-black/10 dark:bg-slate-50/10 hover:bg-black/20 duration-300 group"
@@ -53,7 +62,7 @@ const Todo = ({
         className={`checkbox checkbox-xs`}
         id={id}
         checked={checked}
-        onChange={onChange}
+        onChange={() => handleTodoComplete(!checked)}
       />
       <label
         htmlFor={id}
@@ -61,7 +70,11 @@ const Todo = ({
       >
         {title}
       </label>
-      <TodoOptions handleDelete={handleDelete} />
+      <TodoOptions
+        handleTodoDelete={handleTodoDelete}
+        isRegular={isRegular}
+        handleTodoRegular={handleTodoRegular}
+      />
     </li>
   );
 };
