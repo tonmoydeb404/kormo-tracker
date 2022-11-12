@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import Todo from "../../features/todo/Todo";
-import {
-  useDeleteTodoMutation,
-  useUpdateTodoMutation,
-} from "../../features/todo/todoApi";
+import TodoList from "../../features/todo/TodoList";
 import GenSekeleton from "../Skeleton/GenSekeleton";
 import TodoSkeleton from "../Skeleton/TodoSkeleton";
 
@@ -29,51 +25,24 @@ const DashboardTodoHeader = ({
 
 // dashboard todo body
 const DashboardTodoBody = ({ data = [], isLoading = true }) => {
-  const [updateTodo, updateResponse] = useUpdateTodoMutation();
-  const [deleteTodo, deleteResponse] = useDeleteTodoMutation();
-
-  // handle todo complete
-  const handleTodoComplete = (isCompleted, todo) => {
-    updateTodo({ ...todo, isCompleted });
-  };
-  // handle todo delete
-  const handleTodoDelete = (id) => {
-    deleteTodo(id);
-  };
-  // handle todo regular
-  const handleTodoRegular = (isRegular, todo) => {
-    updateTodo({ ...todo, isRegular });
-  };
-
   // todos content
   let todosContent = "";
+
   // handle loading state
-  if (!isLoading) {
-    todosContent =
-      data && data.length ? (
-        data.map((item, index, arr) => (
-          <Todo
-            key={item.id}
-            title={item.title}
-            id={item.id}
-            checked={item.isCompleted}
-            isRegular={item.isRegular}
-            lastChild={arr.length - index <= 1}
-            handleTodoComplete={(isChecked) =>
-              handleTodoComplete(isChecked, item)
-            }
-            handleTodoRegular={(isRegular) =>
-              handleTodoRegular(isRegular, item)
-            }
-            handleTodoDelete={() => handleTodoDelete(item.id)}
-            className="todolist_item"
-          />
-        ))
-      ) : (
-        <li className="py-3 px-4 bg-black/10 rounded">no todos are here</li>
-      );
-  } else {
+  if (isLoading) {
     todosContent = <GenSekeleton element={<TodoSkeleton />} count={5} />;
+  }
+
+  // handle empty data state
+  if (!isLoading && data && !data.length) {
+    todosContent = (
+      <li className="py-3 px-4 bg-black/10 rounded">no todos are here</li>
+    );
+  }
+
+  // handle data state
+  if (!isLoading && data && data.length) {
+    todosContent = <TodoList data={data} className="todolist_item" />;
   }
 
   return (

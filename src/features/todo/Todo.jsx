@@ -2,9 +2,9 @@ import React from "react";
 
 const TodoOptions = ({
   index = 0,
-  handleTodoDelete,
-  handleTodoRegular,
-  isRegular,
+  deleteTodo = async () => {},
+  type = "NORMAL",
+  createRegularTodo = async () => {},
 }) => {
   return (
     <div className="dropdown dropdown-end ml-auto">
@@ -16,23 +16,14 @@ const TodoOptions = ({
         tabIndex={index}
         className="dropdown-content bg-base-300 border border-slate-700 menu menu-compact shadow rounded w-52"
       >
-        {isRegular ? (
-          <li>
-            <span onClick={() => handleTodoRegular(false)}>
-              <i className="bi bi-bookmark-dash"></i>
-              remove from regular
-            </span>
-          </li>
-        ) : (
-          <li>
-            <span onClick={() => handleTodoRegular(true)}>
-              <i className="bi bi-bookmark"></i>
-              mark as regular
-            </span>
-          </li>
-        )}
+        <li className={type == "REGULAR" ? "hidden" : ""}>
+          <span onClick={createRegularTodo}>
+            <i className="bi bi-bookmark"></i>
+            mark as regular
+          </span>
+        </li>
         <li>
-          <span onClick={handleTodoDelete}>
+          <span onClick={deleteTodo}>
             <i className="bi bi-trash "></i>
             delete todo
           </span>
@@ -43,40 +34,42 @@ const TodoOptions = ({
 };
 
 const Todo = ({
-  title = null,
-  checked = undefined,
-  isRegular = false,
-  id = null,
-  lastChild = false,
-  handleTodoComplete = () => {},
-  handleTodoDelete = () => {},
-  handleTodoRegular = () => {},
   className = "",
+  id = null,
+  title = null,
+  type = "NORMAL",
+  date = null,
+  isCompleted = false,
+  lastChild = false,
+  // actions
+  deleteTodo = async () => {},
+  completeTodo = async () => {},
+  createRegularTodo = async () => {},
 }) => {
   return (
     <li
-      className={`flex items-center gap-2 select-none py-2 px-3 cursor-pointer rounded duration-300 group ${className}`}
+      className={`flex items-center gap-2 select-none py-2 px-3  cursor-pointer rounded duration-300 group ${className}`}
       data-last={lastChild}
     >
       <input
         type="checkbox"
         className={`checkbox checkbox-xs`}
         id={id}
-        checked={checked}
-        onChange={() => handleTodoComplete(!checked)}
+        checked={Boolean(isCompleted)}
+        onChange={async (e) => await completeTodo(e.target.checked)}
       />
-      <label htmlFor={id} className="text-sm ml-1 cursor-pointer">
+      <label htmlFor={id} className="text-sm ml-1 cursor-pointer py-1.5">
         {title}
       </label>
-      <TodoOptions
-        handleTodoDelete={handleTodoDelete}
-        isRegular={isRegular}
-        handleTodoRegular={handleTodoRegular}
-      />
+      {!isCompleted && (
+        <TodoOptions
+          deleteTodo={deleteTodo}
+          type={type}
+          createRegularTodo={createRegularTodo}
+        />
+      )}
     </li>
   );
 };
 
 export default Todo;
-
-// bg-black/10 dark:bg-slate-50/10 hover:bg-black/20

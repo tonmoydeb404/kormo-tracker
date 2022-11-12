@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectDateFilter,
   setDateFilter,
-  toggleDateFilter,
 } from "../features/global/globalSlice";
 
 const CalendarBtn = () => {
@@ -26,22 +25,6 @@ const CalendarBtn = () => {
         tabIndex={1}
         className="dropdown-content menu p-1 pb-0 shadow bg-base-100 rounded-sm border border-slate-700 min-w-[200px]"
       >
-        <li>
-          <label
-            htmlFor="dateFilter"
-            className="flex items-center justify-between"
-          >
-            Date filter:
-            <input
-              type="checkbox"
-              id="dateFilter"
-              className="checkbox checkbox-sm checkbox-primary"
-              checked={date !== null}
-              onChange={() => dispatch(toggleDateFilter())}
-            />
-          </label>
-        </li>
-
         <div className={`p-0 ${date == null ? "hidden" : ""}`}>
           <ReactDatePicker
             selected={new Date(date)}

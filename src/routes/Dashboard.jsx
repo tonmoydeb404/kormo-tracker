@@ -6,19 +6,23 @@ import DashboardTodoList from "../components/Dashboard/DashboardTodoList";
 import { selectDateFilter } from "../features/global/globalSlice";
 import {
   useLazyCreateCollectionQuery,
+  useLazyGetRegularQuery,
   useLazyGetTodosQuery,
 } from "../features/todo/todoApi";
 
 const Dashboard = () => {
   // queries
   const [getTodos, { isLoading, data }] = useLazyGetTodosQuery();
-  const [createCollection, _] = useLazyCreateCollectionQuery();
+  const [getRegular, { isLoading: isLoadingR, data: dataR }] =
+    useLazyGetRegularQuery();
+  const [createCollection] = useLazyCreateCollectionQuery();
 
   // initial queries
   useEffect(() => {
     (async () => {
-      await createCollection();
-      await getTodos();
+      await createCollection().unwrap();
+      await getTodos().unwrap();
+      await getRegular().unwrap();
     })();
   }, []);
 
@@ -32,7 +36,7 @@ const Dashboard = () => {
 
   // load todo states
   useEffect(() => {
-    if (!isLoading && data && data.length) {
+    if (!isLoading && data && data.length && dataR && !isLoadingR) {
       // filtererd todos
       const ftodos = data.filter(
         (item) =>
@@ -42,8 +46,6 @@ const Dashboard = () => {
           !item.isRegular &&
           !item.isCompleted
       );
-      // regular todos
-      const rtodos = data.filter((item) => item.isRegular && !item.isCompleted);
       // completed todos
       const ctodos = data.filter(
         (item) =>
@@ -53,23 +55,67 @@ const Dashboard = () => {
               new Date(dateFilter).toDateString())
       );
 
+      // regular todos
+      const rtodos = dataR.filter((item) => {
+        // current date
+        const currentDate =
+          dateFilter == null
+            ? new Date().getTime()
+            : new Date(dateFilter).getTime();
+
+        // check created at
+        const createdAt = new Date(item.createdAt).setHours(0, 0, 0);
+        const validCreatedAt = createdAt <= currentDate;
+
+        // check deleted at
+        const deletedAt = new Date(item.deletedAt).setHours(0, 0, 0);
+        const validDeletedAt =
+          item.deletedAt == null ? true : deletedAt >= currentDate;
+
+        // check cureent todos contains this id or not
+        const todoIndex = data.findIndex((todoItem) => {
+          console.log({
+            id: todoItem.id,
+            d: [item.id, new Date(todoItem.date).getTime()].toString(),
+            1: new Date(dateFilter).toDateString(),
+            2: new Date(todoItem.date).toDateString(),
+          });
+          return (
+            todoItem.id ==
+              [item.id, new Date(todoItem.date).getTime()].toString() &&
+            new Date(dateFilter).toDateString() ==
+              new Date(todoItem.date).toDateString()
+          );
+        });
+        const validTodo = todoIndex < 0;
+
+        console.log({
+          validCreatedAt,
+          validDeletedAt,
+          validTodo,
+          dataR,
+          todoIndex,
+        });
+
+        return validCreatedAt && validDeletedAt && validTodo;
+      });
+
       // update states
       setFilteredTodos(ftodos);
-      setRegularTodos(rtodos);
       setCompletedTodos(ctodos);
+      setRegularTodos(rtodos);
     }
 
     // clean up
     return () => {
       setFilteredTodos([]);
-      setRegularTodos([]);
       setCompletedTodos([]);
+      setRegularTodos([]);
     };
-  }, [data, isLoading, dateFilter]);
+  }, [data, isLoading, dataR, isLoadingR, dateFilter]);
 
   // dynamic title
   let dynamicTitle = null;
-
   if (new Date(dateFilter).toDateString() == new Date().toDateString()) {
     dynamicTitle = "Todays";
   } else if (dateFilter == null) {

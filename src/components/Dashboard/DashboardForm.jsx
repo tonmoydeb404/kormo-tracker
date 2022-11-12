@@ -14,12 +14,24 @@ const DashboardForm = () => {
 
   const handleTodoForm = async (e) => {
     e.preventDefault();
+
+    // todo date
+    const cDate = new Date();
+    const fDate = new Date(dateFilter).setHours(
+      cDate.getHours(),
+      cDate.getMinutes(),
+      cDate.getSeconds()
+    );
+    const date =
+      dateFilter == null ? cDate.toISOString() : new Date(fDate).toISOString();
+
+    // todo structure
     const newTodo = {
       id: nanoid(),
       title: title,
-      date: dateFilter == null ? new Date().toISOString() : dateFilter,
+      date,
       isCompleted: false,
-      isRegular: false,
+      type: "NORMAL",
     };
     await addTodo(newTodo);
     // reset state
