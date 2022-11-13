@@ -40,7 +40,6 @@ const Todo = ({
   type = "NORMAL",
   date = null,
   isCompleted = false,
-  lastChild = false,
   // actions
   deleteTodo = async () => {},
   completeTodo = async () => {},
@@ -49,7 +48,6 @@ const Todo = ({
   return (
     <li
       className={`flex items-center gap-2 select-none py-2 px-3  cursor-pointer rounded duration-300 group ${className}`}
-      data-last={lastChild}
     >
       <input
         type="checkbox"

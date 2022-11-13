@@ -53,3 +53,11 @@
 .todolist_item {
   @apply bg-slate-50 dark:bg-slate-50/5 shadow;
 }
+
+.collapse-open {
+  @apply overflow-visible;
+}
+
+.collapse-open .todolist_body {
+  @apply py-6 overflow-visible;
+}

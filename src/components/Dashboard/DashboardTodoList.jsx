@@ -47,7 +47,7 @@ const DashboardTodoBody = ({ data = [], isLoading = true }) => {
 
   return (
     <div className="collapse-content px-0 todolist_body">
-      <ul className="flex flex-col gap-2 mt-5 px-4">{todosContent}</ul>
+      <ul className="flex flex-col gap-2 px-4">{todosContent}</ul>
     </div>
   );
 };
@@ -67,9 +67,7 @@ const DashboardTodoList = ({
     <div>
       <div
         className={`todolist todolist-${type} 
-        collapse rounded ${
-          isOpen ? "collapse-open overflow-auto" : "collapse-close"
-        }
+        collapse rounded ${isOpen ? "collapse-open" : "collapse-close"}
         ${className}`}
       >
         <DashboardTodoHeader

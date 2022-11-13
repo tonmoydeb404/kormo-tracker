@@ -135,7 +135,6 @@ const TodoList = ({ data = [], className = "" }) => {
           date={item.date}
           isCompleted={item.isCompleted}
           type={item.type}
-          lastChild={arr.length - index == 1}
           // actions
           deleteTodo={async () =>
             await handleDeleteTodo({ type: item.type, id: item.id, todo: item })
