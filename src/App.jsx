@@ -9,13 +9,15 @@ import Home from "./routes/Home";
 
 const App = () => {
   return (
-    <Routes>
-      <Route path="/dashboard">
-        <Route index element={<Dashboard />} />
-      </Route>
-      <Route path="/" element={<Home />}></Route>
-      <Route path="/*" element={<NotFound />}></Route>
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/dashboard">
+          <Route index element={<Dashboard />} />
+        </Route>
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/*" element={<NotFound />}></Route>
+      </Routes>
+    </>
   );
 };
 
