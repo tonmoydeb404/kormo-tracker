@@ -8,6 +8,6 @@ This is a simple React TODO app using some extra features.
 - [x] Creating Structure
 - [x] Implementing Redux State
 - [x] Using IndexedDB
-- [ ] Meta Styles
+- [x] Meta Styles
 - [ ] Implement PWA
 - [ ] Notification Feature
