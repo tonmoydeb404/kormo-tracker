@@ -11,3 +11,4 @@ This is a simple React TODO app using some extra features.
 - [x] Meta Styles
 - [ ] Implement PWA
 - [ ] Notification Feature
+- [ ] Code Refractor
