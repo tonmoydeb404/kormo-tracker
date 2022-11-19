@@ -3,7 +3,7 @@
   "background_color": "#f6a924",
   "display": "standalone",
   "scope": "/",
-  "start_url": "/dashboard",
+  "start_url": "/",
   "name": "KORMO Tracker",
   "short_name": "KORMO",
 
