@@ -21,6 +21,8 @@ const Dashboard = () => {
   useEffect(() => {
     (async () => {
       await createCollection().unwrap();
+      // set localstorage
+      localStorage.setItem("KORMO-INITIALIZED", true);
       await getTodos().unwrap();
       await getRegular().unwrap();
     })();
